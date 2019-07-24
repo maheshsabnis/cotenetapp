@@ -60,8 +60,11 @@ namespace cotenetapp.Services
         {
             var res = await ctx.Products.FindAsync(id);
             if(res != null)
-            { 
-                ctx.Update<Product>(entity).State = EntityState.Modified;
+            {
+                res.ProductId = entity.ProductId;
+                res.ProductName = entity.ProductName;
+                res.Manufacturer = entity.Manufacturer;
+                res.Price = entity.Price;
                 await ctx.SaveChangesAsync();
             }
             return entity;
