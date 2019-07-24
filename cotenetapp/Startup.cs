@@ -14,6 +14,7 @@ using cotenetapp.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using cotenetapp.Models;
+using cotenetapp.Services;
 
 namespace cotenetapp
 {
@@ -46,6 +47,10 @@ namespace cotenetapp
                 options.UseSqlServer
                (Configuration.GetConnectionString("MyAppDbConnection"));
             });
+            // ends here
+
+            // register all Business Repositories aka services
+            services.AddTransient<IServiceRepository<Category, int>, CategoryServiceRepository>();
             // ends here
             
             
