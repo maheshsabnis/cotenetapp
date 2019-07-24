@@ -51,9 +51,11 @@ namespace cotenetapp
 
             // register all Business Repositories aka services
             services.AddTransient<IServiceRepository<Category, int>, CategoryServiceRepository>();
+            services.AddTransient<IServiceRepository<Product, int>, ProductServiceRepository>();
+
             // ends here
-            
-            
+
+
             // initialize default  security
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)

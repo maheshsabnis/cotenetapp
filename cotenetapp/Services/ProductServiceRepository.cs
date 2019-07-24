@@ -16,55 +16,52 @@ namespace cotenetapp.Services
     /// .This repository must be registered in Services
     /// of Startup.cs
     /// </summary>
-    public class CategoryServiceRepository
-        : IServiceRepository<Category, int>
+    public class ProductServiceRepository
+        : IServiceRepository<Product, int>
     {
         private readonly MyAppDbContext ctx;
 
-        public CategoryServiceRepository(MyAppDbContext ctx)
+        public ProductServiceRepository(MyAppDbContext ctx)
         {
             this.ctx = ctx;
         }
-        public async Task<Category> CreateAsync(Category entity)
+        public async Task<Product> CreateAsync(Product entity)
         {
-            var res = await ctx.Categories.AddAsync(entity);
+            var res = await ctx.Products.AddAsync(entity);
             await ctx.SaveChangesAsync();
             return res.Entity;
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var entity = await ctx.Categories.FindAsync(id);
+            var entity = await ctx.Products.FindAsync(id);
             if (entity == null)
             {
                 return false;
             }
-            ctx.Categories.Remove(entity);
+            ctx.Products.Remove(entity);
             await ctx.SaveChangesAsync();
             return true;
         }
 
-        public async Task<IEnumerable<Category>> GetAsync()
+        public async Task<IEnumerable<Product>> GetAsync()
         {
-            var entities = await ctx.Categories.ToListAsync();
+            var entities = await ctx.Products.ToListAsync();
             return entities;
         }
 
-        public async Task<Category> GetAsync(int id)
+        public async Task<Product> GetAsync(int id)
         {
-            var entity = await ctx.Categories.FindAsync(id);
+            var entity = await ctx.Products.FindAsync(id);
             return entity;
         }
 
-        public async Task<Category> UpdateAsync(int id, Category entity)
+        public async Task<Product> UpdateAsync(int id, Product entity)
         {
-            var res = await ctx.Categories.FindAsync(id);
+            var res = await ctx.Products.FindAsync(id);
             if(res != null)
-            {
-                // ctx.Update<Category>(entity).State = EntityState.Modified;
-                res.CategoryId = entity.CategoryId;
-                res.CategoryName = entity.CategoryName;
-                res.BasePrice = entity.BasePrice;
+            { 
+                ctx.Update<Product>(entity).State = EntityState.Modified;
                 await ctx.SaveChangesAsync();
             }
             return entity;
