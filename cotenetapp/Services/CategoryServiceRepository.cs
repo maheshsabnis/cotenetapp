@@ -27,9 +27,19 @@ namespace cotenetapp.Services
         }
         public async Task<Category> CreateAsync(Category entity)
         {
-            var res = await ctx.Categories.AddAsync(entity);
-            await ctx.SaveChangesAsync();
-            return res.Entity;
+            Category cat = null ;
+            try
+            {
+                var res = await ctx.Categories.AddAsync(entity);
+                await ctx.SaveChangesAsync();
+                cat = res.Entity;
+               // return res.Entity;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return cat;
         }
 
         public async Task<bool> DeleteAsync(int id)

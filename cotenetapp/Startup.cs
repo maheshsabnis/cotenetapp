@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using cotenetapp.Models;
 using cotenetapp.Services;
+using cotenetapp.CustomFilters;
 
 namespace cotenetapp
 {
@@ -55,13 +56,17 @@ namespace cotenetapp
 
             // ends here
 
-
             // initialize default  security
             services.AddDefaultIdentity<IdentityUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             // configure MVC
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(options => 
+            {
+                // registering Action Filter in GLobal Scope
+                options.Filters.Add(typeof(LogActionFilterAttribute));
+                options.Filters.Add(typeof(CustomException));
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

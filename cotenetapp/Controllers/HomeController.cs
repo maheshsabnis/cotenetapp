@@ -5,11 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using cotenetapp.Models;
+using cotenetapp.CustomFilters;
 
 namespace cotenetapp.Controllers
 {
+   // [LogActionFilter]
     public class HomeController : Controller
     {
+        //[LogActionFilter]
         public IActionResult Index()
         {
             return View();

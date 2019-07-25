@@ -53,16 +53,30 @@ namespace cotenetapp.Controllers
         [HttpPost]
         public IActionResult Create(Category cat)
         {
-            // check if the category is valid as per
-            // data annotation rules
-            if (ModelState.IsValid)
+            try
             {
-                var res  = catRepository.CreateAsync(cat).Result;
-                // redirect to Index action  of the current controller
-                return RedirectToAction("Index");
+                // check if the category is valid as per
+                // data annotation rules
+                if (ModelState.IsValid)
+                {
+                    var res = catRepository.CreateAsync(cat).Result;
+                    // redirect to Index action  of the current controller
+                    return RedirectToAction("Index");
+                }
+                // else stay on the same view and show error messages
+                return View(cat);
             }
-            // else stay on the same view and show error messages
-            return View(cat);
+            catch (Exception ex)
+            {
+                // return the Error Page with details
+                //return View("Error", new ErrorViewModel()
+                //{
+                //     ErrorMessage = ex.Message,
+                //     ControllerName = this.RouteData.Values["controller"].ToString(),
+                //     ActionName = this.RouteData.Values["action"].ToString()
+                //});
+                throw ex;
+            }
         }
         
         public IActionResult Edit(int id)
