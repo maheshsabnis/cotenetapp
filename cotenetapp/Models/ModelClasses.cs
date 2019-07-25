@@ -35,6 +35,8 @@ namespace cotenetapp.Models
         [Required(ErrorMessage = "Manufacturer is Must")]
         public string Manufacturer { get; set; }
         [Required(ErrorMessage ="Price is Must")]
+        [NumericValidator(ErrorMessage = "Value Cannot be Zero or -Ve")]
+
         public int Price { get; set; }
         // Foreign Key
         public int CategoryRowId { get; set; }

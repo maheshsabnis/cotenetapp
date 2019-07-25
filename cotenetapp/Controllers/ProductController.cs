@@ -11,11 +11,14 @@ namespace cotenetapp.Controllers
     public class ProductController : Controller
     {
         private readonly IServiceRepository<Product, int> prdRepository;
+        private readonly IServiceRepository<Category, int> catRepository;
 
         public ProductController(
-            IServiceRepository<Product, int> prdRepository)
+            IServiceRepository<Product, int> prdRepository, 
+            IServiceRepository<Category, int> catRepository)
         {
             this.prdRepository = prdRepository;
+            this.catRepository = catRepository;
         }
         /// <summary>
         /// Provides list of Model data
@@ -31,6 +34,7 @@ namespace cotenetapp.Controllers
         public IActionResult Create()
         {
             var cat = new Product();
+            ViewBag.CategoryRowId = catRepository.GetAsync().Result.ToList();
             return View(cat);
         }
          
@@ -43,6 +47,8 @@ namespace cotenetapp.Controllers
                 // redirect to Index action  of the current controller
                 return RedirectToAction("Index");
             }
+            ViewBag.CategoryRowId = catRepository.GetAsync().Result.ToList();
+
             // else stay on the same view and show error messages
             return View(cat);
         }

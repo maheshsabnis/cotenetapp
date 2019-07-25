@@ -35,7 +35,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="CategoryRowId" class="control-label"></label>
-                <input asp-for="CategoryRowId" class="form-control" />
+                <select asp-for="CategoryRowId" class="form-control"
+                         asp-items='@new SelectList((IEnumerable<Category>)ViewBag.CategoryRowId, "CategoryRowId","CategoryName")'>
+                </select>
                 <span asp-validation-for="CategoryRowId" class="text-danger"></span>
             </div>
             <div class="form-group">
