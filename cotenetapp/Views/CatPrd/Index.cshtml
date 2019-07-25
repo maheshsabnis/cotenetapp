@@ -1,46 +1,98 @@
 ﻿@model cotenetapp.Models.CategoryProduct
 
-    <h1>Master Details</h1>
+<h1>Master Details</h1>
 
-    <h2>List of Categories</h2>
-    <table class="table">
-        <thead>
+<h2>List of Categories</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                CategoryRowId
+            </th>
+            <th>
+                CategoryId
+            </th>
+            <th>
+                CategoryName
+            </th>
+            <th>
+                BasePrice
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Categories)
+        {
             <tr>
-                <th>
-                   CategoryRowId
-                </th>
-                <th>
-                    CategoryId
-                </th>
-                <th>
-                   CategoryName
-                </th>
-                <th>
-                    BasePrice
-                </th>
-                <th></th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryRowId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BasePrice)
+                </td>
+                <td>
+                    @Html.ActionLink("ShowDetails", "ShowDetails", new { id = item.CategoryRowId }) |
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Categories)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CategoryRowId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CategoryId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CategoryName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.BasePrice)
-                    </td>
-                    <td>
-                        @Html.ActionLink("ShowDetails", "Edit", new { id = item.CategoryRowId }) |
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table> 
+        }
+    </tbody>
+</table>
+<hr />
+<h2>List of Products</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               ProductRowId
+            </th>
+            <th>
+                ProductId
+            </th>
+            <th>
+                ProductName
+            </th>
+            <th>
+                Manufacturer
+            </th>
+            <th>
+               Price
+            </th>
+            <th>
+                CategoryRowId
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Products)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductRowId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Manufacturer)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryRowId)
+                </td>
+                
+            </tr>
+        }
+    </tbody>
+</table>

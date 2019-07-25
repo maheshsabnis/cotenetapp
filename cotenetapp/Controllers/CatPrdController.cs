@@ -26,5 +26,15 @@ namespace cotenetapp.Controllers
             };
             return View(combine);
         }
+
+        public IActionResult ShowDetails(int id)
+        {
+            var combine = new CategoryProduct()
+            {
+                Categories = catRepo.GetAsync().Result.ToList(),
+                Products = prdRepo.GetAsync().Result.ToList().Where(c=>c.CategoryRowId==id).ToList()
+            };
+            return View("Index", combine);
+        }
     }
 }

@@ -17,6 +17,7 @@ namespace cotenetapp.Models
         public string CategoryName { get; set; }
 
         [Required(ErrorMessage = "Base Price is Must")]
+        [NumericValidator(ErrorMessage ="Value Cannot be Zero or -Ve")]
         public int BasePrice { get; set; }
 
         // one-to-many Relationship
