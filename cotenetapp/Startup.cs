@@ -16,6 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using cotenetapp.Models;
 using cotenetapp.Services;
 using cotenetapp.CustomFilters;
+using Newtonsoft.Json.Serialization;
+using cotenetapp.CustomMiddlewares;
 
 namespace cotenetapp
 {
@@ -84,6 +86,16 @@ namespace cotenetapp
             });
             // ends here
 
+            // define CORS Policies for REST API
+            services.AddCors(options => 
+            {
+                options.AddPolicy("corspolicy", policy =>
+                {
+                    policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+                });
+            });
+            // Ends here
+
 
             // configure MVC
             services.AddMvc(options => 
@@ -91,7 +103,11 @@ namespace cotenetapp
                 // registering Action Filter in GLobal Scope
                 options.Filters.Add(typeof(LogActionFilterAttribute));
                // options.Filters.Add(typeof(CustomException));
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            }).AddJsonOptions(options =>
+                    options.SerializerSettings.ContractResolver
+             = new DefaultContractResolver()
+                )
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -113,6 +129,11 @@ namespace cotenetapp
             app.UseStaticFiles();
             app.UseCookiePolicy();
 
+            // configure the CORS Policy Middleware
+
+            app.UseCors("corspolicy");
+            app.UseExceptionHandlerMiddleware();
+            // security middleware
             app.UseAuthentication();
 
             app.UseMvc(routes =>
