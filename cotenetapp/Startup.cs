@@ -57,15 +57,40 @@ namespace cotenetapp
             // ends here
 
             // initialize default  security
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddDefaultIdentity<IdentityUser>()
+            //    .AddDefaultUI(UIFramework.Bootstrap4)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // initialize the application Identity for Users and Roles
+            // provides an Ijections for UserManager and RoleManager 
+            // and SignInManager
+            services.AddIdentity<IdentityUser,IdentityRole>()
+               .AddDefaultUI(UIFramework.Bootstrap4)
+               .AddEntityFrameworkStores<ApplicationDbContext>();
+            // ends Here
+
+            // add authorization for Policies
+            services.AddAuthorization(options => 
+            {
+                options.AddPolicy("readpolicy", builder =>
+                 {
+                     builder.RequireRole("Manager", "Clerk", "Admin");
+                 });
+
+                options.AddPolicy("writepolicy", builder =>
+                {
+                    builder.RequireRole("Manager", "Admin");
+                });
+            });
+            // ends here
+
+
             // configure MVC
             services.AddMvc(options => 
             {
                 // registering Action Filter in GLobal Scope
                 options.Filters.Add(typeof(LogActionFilterAttribute));
-                options.Filters.Add(typeof(CustomException));
+               // options.Filters.Add(typeof(CustomException));
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using cotenetapp.Models;
 using cotenetapp.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace cotenetapp.Controllers
 { 
@@ -27,6 +28,9 @@ namespace cotenetapp.Controllers
         /// Provides list of Model data
         /// </summary>
         /// <returns></returns>
+        /// 
+
+        [Authorize(Policy ="readpolicy")]
         public IActionResult Index()
         {
             var cats = catRepository.GetAsync().Result;
@@ -38,6 +42,8 @@ namespace cotenetapp.Controllers
         /// a view with EMpty Category Object
         /// </summary>
         /// <returns></returns>
+        /// 
+        [Authorize(Policy = "writepolicy")]
         public IActionResult Create()
         {
             var cat = new Category();
@@ -59,6 +65,19 @@ namespace cotenetapp.Controllers
                 // data annotation rules
                 if (ModelState.IsValid)
                 {
+                    var cats = catRepository.GetAsync().Result.ToList();
+
+                    var ct = cats.Where(c => c.CategoryId == cat.CategoryId).FirstOrDefault();
+                    if(ct !=null) throw new Exception("Category Id is already Present");
+
+                    //foreach (var item in cats)
+                    //{
+                    //    if (item.CategoryId.Trim() == cat.CategoryId.Trim())
+                    //    {
+                    //        throw new Exception("Category Id is already Present");
+                    //    }
+                    //}
+
                     var res = catRepository.CreateAsync(cat).Result;
                     // redirect to Index action  of the current controller
                     return RedirectToAction("Index");
